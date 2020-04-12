@@ -119,9 +119,105 @@ ROLES
 - Unhealthy tasks will be replaced - based on predefined health criteria
 - Run service behind the load balancer
 
+### EFS
+
+- Security
+- IAM Permissions
+- EC2 Security Groups - Set inbound rules
+- NACL - network access control list (control traffic)
+- Linux root only permissions (CHOWN, CHMOD)
+
+### S3
+
+0. Basic Concepts
+
+- Bucket: volume is unlimited, must have unique name
+- Objects: 5TB maximum, multipart upload above 100mb
+- Webstore, not file system: Will become eventually consistent
+- SECURE BY DEFAULT - To allow access: IAM Roles, Bucket Policy, NACL (Access control list)
+
+1. Storage Classes
+
+- Standard (99.99% Availability, 11 9's of durability, SSL encryption, Lifecycle Mgt)
+- Standard Infrequent Access (99.9% Availability)
+- Standard One Zone Infrequent Access (99.5% Availability)
+- INTELLIGENT TIERING: move objects between two access tiers (E.g. frequent and infrequent access)
+- S3 Performance: Use Partitions/Prefixes to improve performance
+
+2. Glacier
+
+- Three levels of access: Expedited(3mins), Standard(3Hrs), Bulk (6hrs)
+
+3. Life Cycle Mgt
+
+- Delete when expire
+- Transfer to glacier when expire
+- S3 Version: Objects can have version control. Deleted version can be restored.
+
+4. Cross SIte Replication
+
+- S3 buckets can be replicated across regions
+- Replicate across a pair of regions
+
 ## 43. RDS
 
-1. 2. 3. 4. 5. 6.
+### 1. RDS Backup, Fall Over, Replication
+
+- User initiated snapshots of instance
+- Automated DB Backups to S3
+- Encrypted database. Encrypted Snapshots
+- Enable multiple AZs
+- RDS Read Replicas
+
+### 2. Amazon Aurora
+
+- Enterprise solution for RDS
+- RDS is one instance, Aurora is a cluster of instances (single database endpoint)
+- Automatic load balancing
+- Vertical scaling: size the instances according to load
+- Horizontal scaling: Adding up to 15 read replicas
+- Aurora serverless: Spin up and shut down as needed. Pay only for the usage.
+
+### 3. DynamoDB
+
+- No SQL Database
+- Tables = the file E.g. Persons
+- Attributes = the fields E.g. firt name, lsat name, age
+- Items = the records E.g. Ali, Ahmad, Ah Kow
+- Partition key, Sort Key - for faster access
+- Pricing model: Provisioned capacity: Number of RW per second. Or Auto scaling.
+- DDB Provisioned Capacity
+- DDB On Demand: Autoscaling based on Cloudwatch Alarm
+
+### 4. Neptune
+
+- Graph databases : Nodes, Edges, Properties
+- Graph query languages: Gremlin Sparq
+
+### 5. Redshift
+
+- Petabytes of Data
+- Postgres - OLA and BI
+- Data warehouse: Complex queries against large datasets
+- Redshift Cluster: Leader Node and Compute Nodes
+
+### 6. Elasticache
+
+- Fully managed in-memory data store
+- Redis/Memcached Engine
+- E.g. Frequently used data from DDB is stored in Elasticache for blazing fast response time. A Lambda is used to synchronize the Elasticache and the DDB.
+
+### 7. DocumentDB
+
+- It is not easy to migrate from MongoDB to DDB
+- It is very easy to migrate MongoDB to DocumentDB
+- Advantages:
+
+1. No need to launch EC2 instances. Load balancing of EC2 instances
+2. One primary, up to 15 replicas
+3. 99.99 availability
+4. Replication acress AZs
+5. Continuous backup to S3 - Up to 35 days of point in time recovery
 
 ## 50. VPC
 
